@@ -1,0 +1,7 @@
+name: annotation_driven_dataframe_calcs
+dependencies:
+  - python=3.8
+  - ipykernel
+  - pip
+  - pip:
+    - -r requirements.txt

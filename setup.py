@@ -2,6 +2,7 @@
 
 """The setup script."""
 
+from pathlib import Path
 from setuptools import setup, find_packages
 
 with open('README.rst') as readme_file:
@@ -10,7 +11,9 @@ with open('README.rst') as readme_file:
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
-requirements = ['Click>=7.0', ]
+HERE = Path(__file__).absolute().parent
+
+requirements = (HERE/"requirements.txt").read_text().split("\n")
 
 setup_requirements = ['pytest-runner', ]
 
@@ -18,7 +21,7 @@ test_requirements = ['pytest>=3', ]
 
 setup(
     author="Nsikan Essien",
-    author_email='audreyr@example.com',
+    author_email='',
     python_requires='>=3.5',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
