@@ -3,7 +3,7 @@ from typing import Union
 import pandas
 import dask.dataframe as dd
 
-from annotation_driven_dataframe_calcs.column_names import TIMESTEP_NO
+from annotation_driven_dataframe_calcs.column_names import ACCOUNT_NO, TIMESTEP_NO
 
 def run(
     input_data, run_config
@@ -20,6 +20,7 @@ def expand_for_timesteps(
         )
     ] * len(input_data.index)
     interim_frame_exploded = interim_frame.explode(column=TIMESTEP_NO, ignore_index=True)
+    acct_stmt_indexex_exploded_frame = interim_frame_exploded.set_index([ACCOUNT_NO, TIMESTEP_NO])
 
 
-    return interim_frame_exploded
+    return acct_stmt_indexex_exploded_frame
