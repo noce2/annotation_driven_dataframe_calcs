@@ -3,3 +3,4 @@ dask[dataframe]
 numpy
 scikit-learn
 click>=7.0
+loguru
