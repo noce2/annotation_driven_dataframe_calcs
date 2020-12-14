@@ -1,6 +1,5 @@
-from typing import OrderedDict
+from collections import OrderedDict
 from loguru import logger
-
 
 class LRU(OrderedDict):
     'Limit size, evicting the least recently looked-up key when full'
