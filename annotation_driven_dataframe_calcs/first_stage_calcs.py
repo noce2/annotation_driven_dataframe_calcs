@@ -18,7 +18,7 @@ def generate_series_a_prime(
             kwargs={"entire_input_data_set": input_data_set_for_timesteps},
         )
     )
-    return series_to_return
+    return series_to_return.rename(SERIES_A_PRIME)
 
 
 def cache_enabled_generate_series_a_prime_mapper_generator(cache_size_limit):
