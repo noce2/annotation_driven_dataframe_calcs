@@ -9,7 +9,7 @@ from loguru import logger
 import matplotlib.pyplot as plt
 
 logger.debug(f"Creating the registry")
-__REGISTRY = DiGraph()
+_REGISTRY = DiGraph()
 logger.debug(f"Registry created")
 
 
@@ -39,26 +39,26 @@ def register(
         Registers the supplied function in the store along with any of its
         data dependencies.
         """
-        __REGISTRY.add_node(output_series_name)
+        _REGISTRY.add_node(output_series_name)
 
         for each_dependency in depends_on_calculated_input_series:
-            __REGISTRY.add_edge(each_dependency, output_series_name)
+            _REGISTRY.add_edge(each_dependency, output_series_name)
 
-        __REGISTRY.nodes[output_series_name][function_attribute_name_in_node] = func
+        _REGISTRY.nodes[output_series_name][function_attribute_name_in_node] = func
         return func  # normally a decorator returns a wrapped function,
         # but here we return func unmodified, after registering it
 
     return registrar
 
 def sort_calculations_by_dependencies() -> Iterable:
-    return topological_sort(__REGISTRY)
+    return topological_sort(_REGISTRY)
 
 
 def calculation_function_for_series(output_series_name: str) -> FunctionType:
-    return __REGISTRY.nodes[output_series_name][function_attribute_name_in_node]
+    return _REGISTRY.nodes[output_series_name][function_attribute_name_in_node]
 
 def show_series_dependency_graph():
-    draw(__REGISTRY, with_labels=True, font_weight='bold')
+    draw(_REGISTRY, with_labels=True, font_weight='bold')
 
 def save_task_dependency_graph_to_file(path):
     plt.savefig(path)
