@@ -56,3 +56,9 @@ def sort_calculations_by_dependencies() -> Iterable:
 
 def calculation_function_for_series(output_series_name: str) -> FunctionType:
     return __REGISTRY.nodes[output_series_name][function_attribute_name_in_node]
+
+def show_series_dependency_graph():
+    draw(__REGISTRY, with_labels=True, font_weight='bold')
+
+def save_task_dependency_graph_to_file(path):
+    plt.savefig(path)

@@ -1,4 +1,5 @@
 """Main module."""
+from pathlib import Path
 from typing import Union
 from functools import reduce
 from loguru import logger
@@ -6,8 +7,9 @@ from pandas.core.frame import DataFrame
 
 from annotation_driven_dataframe_calcs.column_names import ACCOUNT_NO, TIMESTEP_NO
 from annotation_driven_dataframe_calcs.registry import (
-    sort_calculations_by_dependencies,
+    save_task_dependency_graph_to_file, sort_calculations_by_dependencies,
     calculation_function_for_series,
+    show_series_dependency_graph
 )
 
 
@@ -33,6 +35,13 @@ def expand_for_timesteps(input_data, first_time_step: int, last_time_step: int):
 def join_registered_series_values(acct_stmt_indexex_exploded_frame):
     list_of_series = list(sort_calculations_by_dependencies())
     logger.debug(f"the registered series and handlers are: {list_of_series}")
+
+    logger.info(f"The task graph of the relationships between series shows:\n")
+    show_series_dependency_graph()
+
+    dep_grap_path = Path("param_calc_task_graph.png").resolve()
+    save_task_dependency_graph_to_file(dep_grap_path)
+    logger.info(f"The task graph of the relationships has been saved to {dep_grap_path}:\n")
 
     agregated_inputs_and_outputs = reduce(
         __calculate_series_and_merge_with_df,
