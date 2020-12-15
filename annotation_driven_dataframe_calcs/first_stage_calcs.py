@@ -1,7 +1,7 @@
 from typing import Tuple
 from loguru import logger
+import pandas
 
-from numpy.core.numeric import roll
 from annotation_driven_dataframe_calcs.caching_tools import LRU
 from annotation_driven_dataframe_calcs.column_names import (
     ACCOUNT_NO,
@@ -11,9 +11,10 @@ from annotation_driven_dataframe_calcs.column_names import (
     SERIES_A_PRIME,
     TIMESTEP_NO,
 )
-import pandas
+from annotation_driven_dataframe_calcs.registry import register
 
 
+@register(output_series_name=SERIES_A_PRIME)
 def generate_series_a_prime(
     input_data_set_for_timesteps: pandas.DataFrame,
 ) -> pandas.Series:
@@ -57,7 +58,9 @@ def cache_enabled_generate_series_a_prime_mapper_generator(
             list_of_previous_computations = []
 
             for i in range(len(tuple_of_initial_values), 0, -1):
-                list_of_previous_computations.append(cache[f"{account_no}_{timestep_no-i}"])
+                list_of_previous_computations.append(
+                    cache[f"{account_no}_{timestep_no-i}"]
+                )
 
             previous_values = tuple(list_of_previous_computations)
 
