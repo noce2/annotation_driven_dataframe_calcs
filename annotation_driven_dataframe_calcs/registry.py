@@ -39,7 +39,16 @@ def register(
         Registers the supplied function in the store along with any of its
         data dependencies.
         """
-        __REGISTRY.add_node(output_series_name)
+        if not(output_series_name in __REGISTRY.nodes):
+            __REGISTRY.add_node(output_series_name)
+        else:
+            error_message = (
+                f"Attempted to register a handler, {func.__name__},"
+                f"for {output_series_name} but that name is aleady in use"
+                f"by {calculation_function_for_series(output_series_name).__name__}\n"
+            )
+            logger.error(error_message)
+            raise ValueError("The names of output_registered_series must be unique")
 
         for each_dependency in depends_on_calculated_input_series:
             __REGISTRY.add_edge(each_dependency, output_series_name)
