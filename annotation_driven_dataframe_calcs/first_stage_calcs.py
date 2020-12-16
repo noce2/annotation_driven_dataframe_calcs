@@ -12,7 +12,7 @@ from annotation_driven_dataframe_calcs.column_names import (
     TIMESTEP_NO,
 )
 from annotation_driven_dataframe_calcs.registry import register
-from annotation_driven_dataframe_calcs.calculation_helpers import adapt_stepwise_calc_for_window, calculate_over_window
+from annotation_driven_dataframe_calcs.calculation_helpers import adapt_stepwise_nonrecursive_calc_for_window, calculate_over_window
 
 
 @register(output_series_name=SERIES_A_PRIME)
@@ -97,7 +97,7 @@ def core_arithmetic_for_current_step(
     window_size=2,
     output_series_name='TEST_OUTPUT_C'
 )
-@adapt_stepwise_calc_for_window
+@adapt_stepwise_nonrecursive_calc_for_window
 def new_core_arithmetric_for_series_b_prime(
     account_no,
     timestep_no,

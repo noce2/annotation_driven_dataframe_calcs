@@ -24,7 +24,7 @@ def calculate_over_window(
         return wrapper_calculate_over_window
     return decorate_calculate_over_window
 
-def adapt_stepwise_calc_for_window(func):
+def adapt_stepwise_nonrecursive_calc_for_window(func):
     @wraps(func)
     def window_adapted_calc(
         rolling_window_series: pandas.Series, entire_input_data_set: pandas.DataFrame
