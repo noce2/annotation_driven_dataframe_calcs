@@ -28,9 +28,9 @@ def calculate_over_window(
         return wrapper_calculate_over_window
     return decorate_calculate_over_window
 
-def adapt_stepwise_nonrecursive_calc_for_window(func):
+def nonrecursive_calculation(func):
     @wraps(func)
-    def window_adapted_calc(
+    def wrap_nonrecursive_calculation(
         rolling_window_series: pandas.Series, entire_input_data_set: pandas.DataFrame
     ):
             account_no, timestep_no = rolling_window_series.tail(n=1).index[0]
@@ -43,7 +43,7 @@ def adapt_stepwise_nonrecursive_calc_for_window(func):
                 current_window_series=rolling_window_series,
                 entire_input_data_set=entire_input_data_set,
             )
-    return window_adapted_calc
+    return wrap_nonrecursive_calculation
 
 def recursive_calculation(
     number_of_previous_terms_needed: int,
