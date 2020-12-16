@@ -12,6 +12,7 @@ from annotation_driven_dataframe_calcs.column_names import (
     TIMESTEP_NO,
 )
 from annotation_driven_dataframe_calcs.registry import register
+from annotation_driven_dataframe_calcs.calculation_helpers import adapt_stepwise_calc_for_window, calculate_over_window
 
 
 @register(output_series_name=SERIES_A_PRIME)
@@ -86,6 +87,24 @@ def core_arithmetic_for_current_step(
 ) -> float:
     return (
         tuple_of_previous_calculated_values[0]
+        - entire_input_data_set.loc[(account_no, timestep_no), PARAM_B]
+        - entire_input_data_set.loc[(account_no, timestep_no), PARAM_C]
+    )
+
+@register(output_series_name='TEST_OUTPUT_C')
+@calculate_over_window(
+    series_to_run_window_over=PARAM_A,
+    window_size=2,
+    output_series_name='TEST_OUTPUT_C'
+)
+@adapt_stepwise_calc_for_window
+def new_core_arithmetric_for_series_b_prime(
+    account_no,
+    timestep_no,
+    current_window_series,
+    entire_input_data_set,
+) -> float:
+    return (
         - entire_input_data_set.loc[(account_no, timestep_no), PARAM_B]
         - entire_input_data_set.loc[(account_no, timestep_no), PARAM_C]
     )
