@@ -43,9 +43,9 @@ def register(
             _REGISTRY.add_node(output_series_name)
         else:
             error_message = (
-                f"Attempted to register a handler, {func.__name__},"
-                f"for {output_series_name} but that name is aleady in use"
-                f"by {calculation_function_for_series(output_series_name).__name__}\n"
+                f"Attempted to register a handler, {func},"
+                f"for {output_series_name} but that name is aleady in use "
+                f"by {calculation_function_for_series(output_series_name)}\n"
             )
             logger.error(error_message)
             raise ValueError("The names of output_registered_series must be unique")
