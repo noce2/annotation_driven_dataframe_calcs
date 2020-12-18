@@ -17,7 +17,7 @@ from annotation_driven_dataframe_calcs.registry import (
     Although the imported modules are not used, their
     import is necessary to trigger the registration process
 """
-from annotation_driven_dataframe_calcs import first_stage_calcs
+## from annotation_driven_dataframe_calcs import first_stage_calcs
 
 
 def run(input_data, run_config):
