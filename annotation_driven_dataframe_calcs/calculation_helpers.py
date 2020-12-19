@@ -115,3 +115,31 @@ def integrated_nonrecursive_calculation(
             ))(function_adapted_over_window)
         return registered_function
     return decorate_integrated_nonrecursive_calculation
+
+
+def integrated_recursive_calculation(
+    series_to_run_window_over: str,
+    window_size: int,
+    output_series_name: str,
+    number_of_previous_terms_needed: int,
+    tuple_of_initial_values: Tuple = (),
+    depends_on_calculated_input_series: List[str] = [],
+
+):
+    def decorate_integrated_recursive_calculation(func):
+        function_adapted_for_recursion: FunctionType = (recursive_calculation(
+            tuple_of_initial_values=tuple_of_initial_values,
+            number_of_previous_terms_needed=number_of_previous_terms_needed
+        ))(func)
+        function_adapted_over_window: FunctionType = (calculate_over_window(
+            series_to_run_window_over=series_to_run_window_over,
+            window_size=window_size,
+            output_series_name=output_series_name
+        ))(function_adapted_for_recursion)
+
+        registered_function: FunctionType = (register(
+            output_series_name=output_series_name,
+            depends_on_calculated_input_series=depends_on_calculated_input_series
+            ))(function_adapted_over_window)
+        return registered_function
+    return decorate_integrated_recursive_calculation
