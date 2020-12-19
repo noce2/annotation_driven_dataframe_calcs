@@ -17,7 +17,7 @@ def calculate_over_window(
 ):
     def decorate_calculate_over_window(func):
         @wraps(func)
-        def wrapper_calculate_over_window(input_data_set_for_timesteps):
+        def wrapper_calculate_over_window(input_data_set_for_timesteps: pandas.DataFrame):
             series_to_return = (
                 input_data_set_for_timesteps.groupby([ACCOUNT_NO, TIMESTEP_NO])[series_to_run_window_over]
                 .rolling(window=window_size, min_periods=1)
