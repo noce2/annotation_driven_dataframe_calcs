@@ -1,5 +1,7 @@
+from types import FunctionType
+from annotation_driven_dataframe_calcs.registry import register
 from annotation_driven_dataframe_calcs.caching_tools import LRU
-from typing import Tuple
+from typing import List, Tuple
 from loguru import logger
 import pandas
 from annotation_driven_dataframe_calcs.column_names import ACCOUNT_NO, TIMESTEP_NO
@@ -92,3 +94,24 @@ def recursive_calculation(
         wrap_recursive_calculation.cache = LRU(maxsize=number_of_previous_terms_needed*CACHE_BUFFER_FACTOR_FOR_RECURSIVE_CALCS)
         return wrap_recursive_calculation
     return decorate_recursive_calculation
+
+def integrated_nonrecursive_calculation(
+    series_to_run_window_over: str,
+    window_size: int,
+    output_series_name: str,
+    depends_on_calculated_input_series: List[str] = []
+):
+    def decorate_integrated_nonrecursive_calculation(func):
+        function_adapted_for_non_recursion: FunctionType = nonrecursive_calculation(func)
+        function_adapted_over_window: FunctionType = (calculate_over_window(
+            series_to_run_window_over=series_to_run_window_over,
+            window_size=window_size,
+            output_series_name=output_series_name
+        ))(function_adapted_for_non_recursion)
+
+        registered_function: FunctionType = (register(
+            output_series_name=output_series_name,
+            depends_on_calculated_input_series=depends_on_calculated_input_series
+            ))(function_adapted_over_window)
+        return registered_function
+    return decorate_integrated_nonrecursive_calculation
