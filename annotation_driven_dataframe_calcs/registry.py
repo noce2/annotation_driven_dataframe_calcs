@@ -29,7 +29,7 @@ def register(
         parameter. MUST NOT include any series already supplied in the original
         dataset.\n
     """
-    logger.debug(
+    logger.info(
         f"Registering series {output_series_name} and its dependencies"
         f" {depends_on_calculated_input_series}"
     )
