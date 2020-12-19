@@ -61,9 +61,9 @@ def join_registered_series_values(acct_stmt_indexex_exploded_frame):
 
 
 def __calculate_series_and_merge_with_df(accumulator_df: DataFrame, series_name: str):
-    logger.debug(f"calculating the series {series_name}")
+    logger.info(f"calculating the series {series_name}")
     calculated_series = (calculation_function_for_series(series_name))(accumulator_df)
-    logger.debug(f"series {series_name} calcuated as:\n {calculated_series}")
+    logger.info(f"series {series_name} calcuated as:\n {calculated_series}")
 
     return accumulator_df.join(
         other=calculated_series, on=[ACCOUNT_NO, TIMESTEP_NO], how="left"
